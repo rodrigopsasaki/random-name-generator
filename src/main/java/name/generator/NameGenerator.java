@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by rodrigo on 07/07/15.
- */
 public class NameGenerator {
 
     private List<Syllable> prefixList;
@@ -99,30 +96,22 @@ public class NameGenerator {
     }
 
     private Syllable getRandomMidText(Syllable prefix) {
-        boolean valid = false;
-        Syllable text = null;
-        while(!valid){
-            text = getRandomElement(midTextList);
-            if((prefix.nextMustBeVowel() && text.startsWithConsonant())
-                    || (prefix.nextMustBeConsonant() && text.startsWithVowel())
-                    || (prefix.endsWithConsonant() && text.addedAfterVowel())
-                    || (prefix.endsWithVowel() && text.addedAfterConsonant())){
-                continue;
-            }
-            valid = true;
-        }
-        return text;
+        return getRandomTextBasedOnPreviousSyllable(prefix, midTextList);
     }
 
     private Syllable getRandomSuffix(Syllable midText) {
+        return getRandomTextBasedOnPreviousSyllable(midText, suffixList);
+    }
+
+    private Syllable getRandomTextBasedOnPreviousSyllable(Syllable syllable, List<Syllable> list){
         boolean valid = false;
         Syllable text = null;
         while(!valid){
-            text = getRandomElement(suffixList);
-            if((midText.nextMustBeVowel() && text.startsWithConsonant())
-                    || (midText.nextMustBeConsonant() && text.startsWithVowel())
-                    || (midText.endsWithConsonant() && text.addedAfterVowel())
-                    || (midText.endsWithVowel() && text.addedAfterConsonant())){
+            text = getRandomElement(list);
+            if((syllable.nextMustBeVowel() && text.startsWithConsonant())
+                    || (syllable.nextMustBeConsonant() && text.startsWithVowel())
+                    || (syllable.endsWithConsonant() && text.addedAfterVowel())
+                    || (syllable.endsWithVowel() && text.addedAfterConsonant())){
                 continue;
             }
             valid = true;
